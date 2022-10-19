@@ -6,12 +6,12 @@
 	function bind_Category_List($conn)
 	{
 		$sqlstring = "SELECT catID, catName FROM category";
-		$result = mysqli_query($conn, $sqlstring);
+		$result = pg_query($conn, $sqlstring);
 		echo "<select name='CategoryList' class='form-control'>
 			<option value='0'> Choose category</option>";
-			while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) 
+			while ($row = pg_fetch_array($result, MYSQLI_ASSOC)) 
 			{
-				echo "<option value='".$row['catID']."'>".$row['catName']."</option>";
+				echo "<option value='".$row['CatID']."'>".$row['CatName']."</option>";
 			}
 		echo "</select>";
 	}
@@ -58,13 +58,13 @@
 			{
 				if ($pic['size'] <= 6614400)
 				{
-					$sq="SELECT * FROM product WHERE proID='$id' OR proName='$proname'";
+					$sq="SELECT * FROM Product WHERE ProID='$id' OR ProName='$proname'";
 					$result = mysqli_query($conn, $sq);
 					if(mysqli_num_rows($result)==0)
 					{
 						copy($pic['tmp_name'], "Image/".$pic['name']);
 						$filePic = $pic['name'];
-						$sqlstring = "INSERT INTO product(proID, proName, price, shortDesc, detailDesc, proDate, proQty, proImg, catID)
+						$sqlstring = "INSERT INTO Product(ProID, ProName, ProPrice, ProShortDesc, ProDetailDesc, ProDate, ProQty, ProImg, CatID)
 										VALUES ('$id','$proname', '$price', '$short','$detail', '".date('Y-m-d H:i:s')."','$qty','$filePic','$category')";
 						mysqli_query($conn, $sqlstring);
 						echo '<meta http-equiv="refesh" content="0;?page=product_management"/>';

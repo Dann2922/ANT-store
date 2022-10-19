@@ -18,10 +18,10 @@
 			if ($err != "") {
 				echo "<li>$err</li>";
 			} else {
-				$sq = "SELECT * FROM category where catID = '$id' or catName = '$name'";
-				$result = mysqli_query($conn, $sq);
-				if (mysqli_num_rows($result) == 0) {
-					mysqli_query($conn, "INSERT INTO category VALUES ('$id', '$name', '$des')") or die (mysqli_error($conn));
+				$sq = "SELECT * FROM Category where CatID = '$id' or CatName = '$name'";
+				$result = pg_query($conn, $sq);
+				if (pg_num_rows($result) == 0) {
+					pg_query($conn, "INSERT INTO Category VALUES ('$id', '$name', '$des')") or die (mysqli_error($conn));
 					echo '<meta http-equiv="refresh" content = "0;URL=?page=category_management"/>';
 				} else {
 					echo "<li>Duplicate category ID or Name</li>";
