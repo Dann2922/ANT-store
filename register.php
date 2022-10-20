@@ -22,7 +22,7 @@
     $sq = "SELECT * FROM customer WHERE username = '$us'";
     $res = mysqli_query($conn, $sq);
     if (mysqli_num_rows($res) == 0) {
-      mysqli_query($conn, "INSERT INTO customer(username, password, cusName, telephone, email, address, state) 
+      mysqli_query($conn, "INSERT INTO Customer(UserName, CusPass, CusName, ) 
                 Values ('$us','$pass','$cusname', '$phone', '$email','$address', 0)") or die(mysqli_error($conn));
       echo '<meta http-equiv="refresh" content = "0; URL=index.php"/>';
     } else {
