@@ -14,9 +14,8 @@ if (isset($_POST['btnLogin'])) {
   } else {
     include_once("connection.php");
     $pass = md5($pa);
-    $res = pg_query($conn, "SELECT UserName, CusPass FROM Customer WHERE UserName='$us'AND CusPass='$pass'"
-    or die(($conn));
-    $row = pg_fetch_array($res, MYSQLI_ASSOC);
+    $res = pg_query($conn, "SELECT UserName, CusPass FROM customer WHERE Username='$us'AND CusPass='$pass'" or die("Connect fail!"));
+    $row = pg_fetch_array($res);
     if (pg_num_rows($res) == 1) {
       $_SESSION['us'] = $us;
       $_SESSION['admin'] = $row['state'];
