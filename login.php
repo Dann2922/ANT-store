@@ -16,7 +16,7 @@ if (isset($_POST['btnLogin'])) {
     $pass = md5($pa);
     $res = pg_query($conn, "SELECT UserName, CusPass FROM customer WHERE Username='$us'AND CusPass='$pass'" or die("Connect fail!"));
     $row = pg_fetch_array($res);
-    if (pg_num_rows($res) == 1) {
+    if (pg_num_rows($res) == 2) {
       $_SESSION['us'] = $us;
       $_SESSION['admin'] = $row['state'];
       echo '<meta http-equiv="refresh" content="0;URL=index.php"/>';
