@@ -4,27 +4,42 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 <?php
-if (isset($_POST['btnLogin'])) {
-  $us = $_POST['txtUsername'];
-  $pa = $_POST['txtPass'];
-  $err = "";
+    if (isset($_POST['btnLogin']))
+	{
+		$us = $_POST['txtbUsername'];
+		$pa = $_POST['txtbpassword'];
+		$err = "";
+		if($us=="") 
+		{
+			$err .= "Enter Username, please<br/>";
+		}
+		if($pa=="")
+		{
+			$err .= "Enter Password, please<br/>";
+		}
 
-  if ($err != "") {
-    echo $err;
-  } else {
-    include_once("connection.php");
-    $pass = md5($pa);
-    $res = pg_query($conn, "SELECT username, cuspass, state FROM public.customer WHERE username='$us'AND cuspass='$pass'" or die("Connect fail!"));
-    $row = pg_fetch_array($res);
-    if (pg_num_rows($res) == 2) {
-      $_SESSION['us'] = $us;
-      $_SESSION['admin'] = $row['state'];
-      echo '<meta http-equiv="refresh" content="0;URL=index.php"/>';
-    } else {
-      echo "Log in fail!";
-    }
-  }
-}
+		if($err !="")
+		{
+			echo $err;
+		}
+		else
+		{
+			include_once("Connect.php");
+			$pass = md5($pa);
+			$res = pg_query($conn, "SELECT username, cuspass, state FROM customer WHERE username='$us' AND cuspass='$pa'");
+			$row = pg_fetch_array($res);
+			if(pg_num_rows($res)==2)
+			{
+				$_SESSION["us"] = $us;
+				$_SESSION["admin"] = $row["state"];
+				echo '<meta http-equiv="refresh" content="0;URL=index.php"/>';
+			}
+			else
+			{
+			echo "you loged in fail";
+			}
+		}
+	}
 ?>
 <div class="container">
 	<div class="row">
