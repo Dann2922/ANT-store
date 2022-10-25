@@ -21,15 +21,20 @@
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Shop</a>
-        </li> 
-        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Management</a>
           <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="?page=store_management">Store</a></li>
+          <li><a class="dropdown-item" href="?page=producer_management">Producer</a></li>
             <li><a class="dropdown-item" href="?page=category_management">Category</a></li>
             <li><a class="dropdown-item" href="?page=product_management">Product</a></li>
           </ul>
         </li>  
+        <li>
+          <form class="example" action="?page=search" style="margin:auto;max-width:300px" method="POST">
+            <input type="text" placeholder="Search.." name="txtSearch">
+            <button type="submit" name="btnsearch" ><i class="fa fa-search"></i></button>
+          </form>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="#About">About us</a>
         </li>
@@ -84,7 +89,23 @@
           include_once("add_product.php");
         } elseif ($page == "update_product") {
           include_once("update_product.php");
-        } 
+        } elseif ($page == "producer_management") {
+          include_once("producer_management.php");
+        }elseif ($page == "add_producer") {
+          include_once("add_producer.php");
+        }elseif ($page == "update_producer") {
+          include_once("update_producer.php");
+        } elseif ($page == "store_management") {
+          include_once("store_management.php");
+        }elseif ($page == "add_store") {
+          include_once("add_store.php");
+        }elseif ($page == "update_store") {
+          include_once("update_store.php");
+        }elseif ($page == "search") {
+          include_once("Search.php");
+        }
+
+
     } 
   else {
     include("content.php");

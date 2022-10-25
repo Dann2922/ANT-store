@@ -23,16 +23,16 @@ else{
         }
     </script>
     <?php
-    include_once("connection.php");
-    if (isset($_GET["function"]) == "del") {
-        if (isset($_GET["id"])) {
-            $id = $_GET["id"];
-            $result = mysqli_query($conn,"SELECT proImg from product where proID='$id'");
-            $image = mysqli_fetch_array($result);
-            mysqli_query($conn, "DELETE from product where proID='$id'");
-        }
-    }    
-    ?>
+            include_once("connection.php");
+                if(isset($_GET["function"])=="del")
+                {
+                    if(isset($_GET["id"]))
+                    {
+                        $id = $_GET["id"];
+                        pg_query($Connect, "DELETE FROM public.product where proid='$id' ");
+                    }
+                }
+            ?>
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
         <form name="frm" method="post" action="">
@@ -51,6 +51,7 @@ else{
                     <th><strong>Price</strong></th>
                     <th><strong>Quantity</strong></th>
                     <th><strong>Product Category</strong></th>
+                    <th><strong>Store</strong></th>
                     <th><strong>Image</strong></th>
                     <th><strong>Edit</strong></th>
                     <th><strong>Delete</strong></th>
@@ -61,28 +62,30 @@ else{
             <?php
                 include_once("connection.php");
 				$No=1;
-                $result = mysqli_query($conn, "SELECT proID, proName, price, proQty, proImg, catName
-                FROM product a, category b
-                WHERE a.catID = b.catID ORDER BY proDate DESC");
+                $result = pg_query($Connect, "SELECT a.proid, a.proname, a.proprice, a.proimg, a.qty, b.catname, c.storename
+                FROM public.product a
+				INNER JOIN public.category b ON a.catid = b.catid
+				INNER JOIN public.store c ON a.storeid = c.storeid");
 
-                while($row=mysqli_fetch_array($result, MYSQLI_ASSOC))
+                while($row= pg_fetch_array($result))
                 {
 			?>
            
                     <tr>
                     <td ><?php echo $No; ?></td>
-                    <td ><?php echo $row["proID"]; ?></td>
-                    <td><?php echo $row["proName"]; ?></td>
-                    <td><?php echo $row["price"]; ?></td>
-                    <td ><?php echo $row["proQty"];; ?></td>
-                    <td><?php echo $row["catName"]; ?></td>
+                    <td ><?php echo $row["proid"]; ?></td>
+                    <td><?php echo $row["proname"]; ?></td>
+                    <td><?php echo $row["proprice"]; ?></td>
+                    <td ><?php echo $row["qty"]; ?></td>
+                    <td><?php echo $row["catname"]; ?></td>                    
+                    <td><?php echo $row["storename"]; ?></td>
                     <td align='center' class='col-control'>
                         <a href="Update_Product.php?id"></a>
-                        <img src='Image/<?php echo $row['proImg']?>' border='0' width="40" height="40"  /></td>
-                    <td align='center' class='col-control'><a href="?page=update_product&&id=<?php echo $row["proID"]; ?>">
+                        <img src='Image/<?php echo $row['proimg']?>' border='0' width="40" height="40"  /></td>
+                    <td align='center' class='col-control'><a href="?page=update_product&&id=<?php echo $row["proid"]; ?>">
                     <img src='images/edit.png' border='0'/></a></td>
                     <td align='center'>
-                        <a href="?page=product_management&&function=del&&id=<?php echo $row["proID"]; ?>" onclick="return deleteConfirm()">
+                        <a href="?page=product_management&&function=del&&id=<?php echo $row["proid"]; ?>" onclick="return deleteConfirm()">
                         <img src="images/delete.png" border='0' width="16" height="16" /></a></td>
                     </tr>
             <?php

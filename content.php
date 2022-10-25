@@ -65,24 +65,25 @@ include_once("connection.php");
 </div>
 <div class="row">
 	<?php
-	$result = mysqli_query($conn, "SELECT * FROM product");
+	$result = pg_query($Connect, "SELECT * FROM public.product");
 	if (!$result) {
-		die('Invalid query: ' . mysqli_error($conn));
+		die('Invalid query: ' );
 	}
-	while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+	while ($row = pg_fetch_array($result)) {
 	?>
 		<div class="col-2th">
 			<div class="card">
                  <div>
-                    <img src="Image/<?php echo $row['proImg'] ?>"  width="100%" height="100%" alt=""> 
+                    <img src="Image/<?php echo $row['proimg'] ?>"  width="100%" height="100%" alt=""> 
                 </div>
                 <div>
-                    <h5 align="center"><a href="#" class="text-default mb-2" data-abc="true"><?php echo  $row['proName'] ?></a></h5>
+                    <h5 align="center"><a href="#" class="text-default mb-2" data-abc="true"><?php echo  $row['proname'] ?></a></h5>
                 </div>
                 <div>
-                    <h6 class="mb-0 font-weight-semibold" align="center">$<?php echo  $row['price'] ?></h6>
+                    <h6 class="mb-0 font-weight-semibold" align="center">$<?php echo  $row['proprice'] ?></h6>
                 </div>
                 <a href="#" class="btn btn-primary">Purchase</a>
+                <a href="#" class="btn btn-primary">Show details</a>
 			</div>
 	    </div>
 	<?php

@@ -9,37 +9,50 @@
 ?>
 <?php
 		include_once("connection.php");
-		function bind_Category_List($conn, $selectedValue){
-			$sqlstring = "SELECT catID, catName from category";
-			$result = mysqli_query($conn, $sqlstring);
+		function bind_Category_List($Connect, $selectedValue){
+			$sqlstring = "SELECT catid, catname from public.category";
+			$result = pg_query($Connect, $sqlstring);
 			echo "<select name='CategoryList' class='form-control'>
 					option value='0'>Choose category</option>";
-					while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+					while ($row = pg_fetch_array($result))
 					{
 						if ($row['catID'] == $selectedValue)
 						{
-							echo "<option value='" . $row['catID']."' selected>".$row['catName']."</option>";
+							echo "<option value='" . $row['catid']."' selected>".$row['catname']."</option>";
 						}
 						else{
-							echo "<option value='" .$row['catID']."'>".$row['catName']."</option>";
+							echo "<option value='" .$row['catid']."'>".$row['catname']."</option>";
 						}
 					}
 			echo"</select>";
 		}
+		function bind_Store_List($Connect)
+	{
+		$sqlstring = "SELECT storeid, storename FROM public.store";
+		$result = pg_query($Connect, $sqlstring);
+		echo "<select name='StoreList' class='form-control'>
+			<option value='0'> Choose store</option>";
+			while ($row = pg_fetch_array($result)) 
+			{
+				echo "<option value='".$row['storeid']."'>".$row['storename']."</option>";
+			}
+		echo "</select>";
+	}
 		if(isset($_GET["id"]))
 		{
 			$id = $_GET["id"];
-			$sqlstring = "SELECT proName, price, shortDesc, detailDesc, proDate
-			, proQty, proImg, catID FROM product WHERE proID='$id' ";
-			$result=mysqli_query($conn, $sqlstring);
-			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-			$pro_name 	= $row["proName"];
-			$short_des 	= $row["shortDesc"];
-			$detail_des = $row["detailDesc"];
-			$price 		= $row["price"];
-			$qty 		= $row["proQty"];
-			$image 		= $row["proImg"];
-			$category 	= $row["catID"];
+			$sqlstring = "SELECT proname, proprice, proshortdesc, prodetail
+			, proimg, qty, catid FROM public.product WHERE proid='$id' ";
+			$result=pg_query($Connect, $sqlstring);
+			$row = pg_fetch_array($result);
+			$pro_name 	= $row["proname"];
+			$short_des 	= $row["proshortdesc"];
+			$detail_des = $row["prodetail"];
+			$price 		= $row["proprice"];
+			$image 		= $row["proimg"];
+			$qty 		= $row["qty"];
+			$category 	= $row["catid"];
+			$store 		= $row["storeid"];
 	?>
 <div class="container">
 	<h2 align="center">Updating Product</h2>
@@ -62,9 +75,15 @@
                 <div class="form-group">   
                     <label for="" class="col-sm-2 control-label">Product category:  </label>
 							<div class="col-sm-10">
-							      <?php bind_Category_List($conn,$category);?>
+							      <?php bind_Category_List($Connect,$category);?>
 							</div>
                 </div>  
+				<div class="form-group">   
+                    <label for="" class="col-sm-2 control-label">Store:  </label>
+							<div class="col-sm-10" name="StoreList" id="StoreList">
+							      <?php bind_Store_List($Connect);?>
+							</div>
+                </div> 
                 <div class="form-group">  
                     <label for="txtPrice" class="col-sm-2 control-label">Price:  </label>
 							<div class="col-sm-10">
@@ -148,6 +167,9 @@
 		if ($category == "0") {
 			$err .= "<li>Please choose Category!</li>";
 		}
+		if ($store == "0") {
+			$err .= "<li>Please choose store!</li>";
+		}
 		if (!is_numeric($price)) {
 			$err .= "<li>Product price must be number!</li>";
 		}
@@ -157,21 +179,21 @@
 			if ($pic['name'] != "") {
 				if ($pic["type"] == "image/jpg" || $pic["type"] == "image/jpeg" || $pic["type"] == "image/png" || $pic["type"] == "image/gif") {
 					if ($pic["size"] < 614400) {
-						$sq = "SELECT * FROM product WHERE proID != '$id' and proName = '$proname'";
-						$result = mysqli_query($conn, $sq);
-							if (mysqli_num_rows($result) == 0){
+						$sq = "SELECT * FROM public.product WHERE proid != '$id' and proname = '$proname'";
+						$result = pg_query($Connect, $sq);
+							if (pg_num_rows($result) == 0){
 								copy($pic['tmp_name'], "Image/" . $pic['name']);
 								$filePic = $pic['name'];
 								$sqlstring = "UPDATE product SET 
-								proName = '$proname', 
-								price ='$price',
-								shortDesc = '$small',
-								detailDesc = '$detail', 
-								proDate = '" . date('Y-m-d H:i:s') . "',
-								proQty = '$qty',
-								proImg = '$filePic',
-								catID = '$category'WHERE proID ='$id'";
-							mysqli_query($conn, $sqlstring);
+								proname = '$proname', 
+								proprice ='$price',
+								proshortdesc = '$small',
+								prodetail = '$detail', 
+								qty = '$qty',
+								proimg = '$filePic',
+								catid = '$category',
+								storeid = '$store',WHERE proid ='$id'";
+							pg_query($Connect, $sqlstring);
 							echo '<meta http-equiv="refresh" content = "0; URL=?page=product_management"/>';
 							} else {
 								echo "<li>Duplicate category ID or Name</li>";
@@ -183,14 +205,13 @@
 						echo "Image format is not correct";
 					}
 			} else {
-				$sq = "SELECT * FROM product WHERE proID != '$id' and proName = '$proname'";
-				$result = mysqli_query($conn, $sq);
-				if (mysqli_num_rows($result) == 0) {
-					$sqlstring = "UPDATE product SET proName = '$proname', price ='$price', 
-					shortDesc = '$small', detailDesc = '$detail', 
-					proDate = '" . date('Y-m-d H:i:s') . "', proQty = '$qty', catID = '$category' 
-					WHERE proID = '$id'";
-					mysqli_query($conn, $sqlstring);
+				$sq = "SELECT * FROM public.product WHERE proid != '$id' and proname = '$proname'";
+				$result = pg_query($Connect, $sq);
+				if (pg_num_rows($result) == 0) {
+					$sqlstring = "UPDATE public.product SET pronname = '$proname', proprice ='$price', 
+					proshortdesc = '$small', prodetail = '$detail', qty = '$qty', catid = '$category' 
+					WHERE proid = '$id'";
+					pg_query($Connect, $sqlstring);
 					echo '<meta http-equiv="refresh" content = "0; URL=?page=product_management"/>';
 				} else {
 					echo "<li>Already Product ID or Name</li>";

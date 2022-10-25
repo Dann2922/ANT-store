@@ -30,7 +30,7 @@ else{
                     if(isset($_GET["id"]))
                     {
                         $id = $_GET["id"];
-                        pg_query($Connect, "DELETE FROM public.category where catid='$id' ");
+                        pg_query($Connect, "DELETE FROM public.producer where producerid='$id' ");
                     }
                 }
             ?>
@@ -38,18 +38,17 @@ else{
 	<meta charset="utf-8" />
 	<link rel="stylesheet" href="css/bootstrap.min.css">
         <form name="frm" method="POST" action="">
-        <h1 align="center">Category Managemnet</h1>
+        <h1 align="center">Producer Managemnet</h1>
         <p>
-         <a href="?page=add_category"><img src="images/add.png" alt="" width="16px" height="16" border="0" />Add</a>
+         <a href="?page=add_producer"><img src="images/add.png" alt="" width="16px" height="16" border="0" />Add</a>
         </p>
        
         <table id="tablecategory" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th><strong>No.</strong></th>
-                    <th><strong>Category Name</strong></th>
-                     <th><strong>Desscription</strong></th>
-                     <th><strong>Producer</strong></th>
+                    <th><strong>Producer Name</strong></th>
+                    <th><strong>Desscription</strong></th>
                     <th><strong>Edit</strong></th>
                     <th><strong>Delete</strong></th>
                 </tr>
@@ -59,22 +58,21 @@ else{
                 <?php
                 include_once("connection.php");
                 $No = 1;
-                $result = pg_query($Connect,"SELECT * FROM public.category");
+                $result = pg_query($Connect,"SELECT * FROM public.producer");
                 while($row = pg_fetch_array($result,))
                 {
                 ?>
 			<tr>
                 <td class="colCB"> <?php echo $No; ?></td>
-                <td><?php echo $row["catname"];?></td>
-                <td><?php echo $row["catdesc"];?></td>
                 <td><?php echo $row["producername"];?></td>
+                <td><?php echo $row["producerdesc"];?></td>
                 <td style='text-align:center'>
-                    <a href="?page=update_category&&id=<?php echo $row["catid"]; ?>"> 
+                    <a href="?page=update_producer&&id=<?php echo $row["producerid"]; ?>"> 
                         <img src='images/edit.png' border='0' width="16" height="16"/>
                     </a>
                 </td>
                 <td style='text-align:center'>
-                    <a href="?page=category_management&&function=del&&id=<?php echo $row["catid"];?>"
+                    <a href="?page=producer_management&&function=del&&id=<?php echo $row["producerid"];?>"
                     onclick="return deleteConfirm()">
                         <img src='images/delete.png' border='0'  width="16" height="16" />
                     </a>

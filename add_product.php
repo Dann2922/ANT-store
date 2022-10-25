@@ -3,15 +3,27 @@
 	<script type="text/javascript" src="scripts/ckeditor/ckeditor.js"></script>
 <?php
 	include_once("connection.php");
-	function bind_Category_List($conn)
+	function bind_Category_List($Connect)
 	{
-		$sqlstring = "SELECT catID, catName FROM category";
-		$result = pg_query($conn, $sqlstring);
+		$sqlstring = "SELECT catid, catname FROM public.category";
+		$result = pg_query($Connect, $sqlstring);
 		echo "<select name='CategoryList' class='form-control'>
-			<option value='0'> Choose category</option>";
-			while ($row = pg_fetch_array($result, MYSQLI_ASSOC)) 
+			<option value='0'> Choose product category</option>";
+			while ($row = pg_fetch_array($result)) 
 			{
-				echo "<option value='".$row['CatID']."'>".$row['CatName']."</option>";
+				echo "<option value='".$row['catid']."'>".$row['catname']."</option>";
+			}
+		echo "</select>";
+	}
+	function bind_Store_List($Connect)
+	{
+		$sqlstring = "SELECT storeid, storename FROM public.store";
+		$result = pg_query($Connect, $sqlstring);
+		echo "<select name='StoreList' class='form-control'>
+			<option value='0'> Choose store</option>";
+			while ($row = pg_fetch_array($result)) 
+			{
+				echo "<option value='".$row['storeid']."'>".$row['storename']."</option>";
 			}
 		echo "</select>";
 	}
@@ -25,6 +37,7 @@
 		$qty = $_POST["txtQty"];
 		$pic = $_FILES["txtImage"];
 		$category = $_POST["CategoryList"];
+		$store = $_POST["StoreList"];
 		$err="";
 
 		if (trim($id)=="")
@@ -47,6 +60,10 @@
 		{
 			$err .= "<li> Product quantity must be number</li>";
 		}
+		if($store=="0")
+		{
+			$err .="<li>Choose store, please</li>";
+		}
 		if ($err!="")
 		{
 			echo "<ul>$err</ul>";
@@ -58,16 +75,16 @@
 			{
 				if ($pic['size'] <= 6614400)
 				{
-					$sq="SELECT * FROM Product WHERE ProID='$id' OR ProName='$proname'";
-					$result = mysqli_query($conn, $sq);
-					if(mysqli_num_rows($result)==0)
+					$sq="SELECT * FROM public.product WHERE proid='$id' OR proname='$proname'";
+					$result = pg_query($Connect, $sq);
+					if(pg_num_rows($result)==0)
 					{
 						copy($pic['tmp_name'], "Image/".$pic['name']);
 						$filePic = $pic['name'];
-						$sqlstring = "INSERT INTO Product(ProID, ProName, ProPrice, ProShortDesc, ProDetailDesc, ProDate, ProQty, ProImg, CatID)
-										VALUES ('$id','$proname', '$price', '$short','$detail', '".date('Y-m-d H:i:s')."','$qty','$filePic','$category')";
-						mysqli_query($conn, $sqlstring);
-						echo '<meta http-equiv="refesh" content="0;?page=product_management"/>';
+						$sqlstring = "INSERT INTO public.product(proid, proname, proprice, proshortdesc, prodetail, qty, proimg, catid, storeid)
+										VALUES ('$id','$proname', '$price', '$short','$detail','$qty','$filePic','$category', '$store')";
+						pg_query($Connect, $sqlstring);
+						echo '<meta http-equiv="refesh" content="10;?page=product_management"/>';
 					}
 					else
 					{
@@ -104,13 +121,20 @@
 							      <input type="text" name="txtName" id="txtName" class="form-control" placeholder="Product Name" value=''/>
 							</div>
                 </div>   
-                <div class="form-group">   
-                    <label for="" class="col-sm-2 control-label">Product category:  </label>
-							<div class="col-sm-10">
-							      <?php bind_Category_List($conn);?>
+				<div class="form-group">   
+                    <label for="" class="col-sm-2 control-label">Category:  </label>
+							<div class="col-sm-10" name="CategoryList" id="CategoryList">
+							      <?php bind_Category_List($Connect);?>
 							</div>
                 </div>  
-                          
+
+				<div class="form-group">   
+                    <label for="" class="col-sm-2 control-label">Store:  </label>
+							<div class="col-sm-10" name="StoreList" id="StoreList">
+							      <?php bind_Store_List($Connect);?>
+							</div>
+                </div>  
+
                 <div class="form-group">  
                     <label for="lblPrice" class="col-sm-2 control-label">Price:  </label>
 							<div class="col-sm-10">

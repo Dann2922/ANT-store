@@ -19,11 +19,11 @@
   else {
     include_once("connection.php");
     $pass = md5($pa1);
-    $sq = "SELECT * FROM public.customer WHERE UserName = '$us'";
-    $res = pg_query($conn, $sq);
+    $sq = "SELECT * FROM public.user WHERE username = '$us'";
+    $res = pg_query($Connect, $sq);
     if (pg_num_rows($res) == 0) {
-      pg_query($conn, "INSERT INTO public.customer (username, cuspass, cusname, cusphone, cusemail, cusaddress, state)
-                Values ('$us','$pass','$cusname', '$phone', '$email','$address', 0)");
+      pg_query($Connect, "INSERT INTO public.user (username, userpass, fullname, userphone, useremail, useraddress)
+                Values ('$us','$pass','$cusname', '$phone', '$email','$address' )");
       echo '<meta http-equiv="refresh" content = "0; URL=index.php"/>';
     } else {
       echo "Username already exists";

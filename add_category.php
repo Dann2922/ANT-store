@@ -4,10 +4,23 @@
 
      <?php
 		include_once("connection.php");
+		function bind_Producer_List($Connect)
+	{
+		$sqlstring = "SELECT producerid, producername FROM public.producer";
+		$result = pg_query($Connect, $sqlstring);
+		echo "<select name='ProducerList' class='form-control'>
+			<option value='0'> Choose producer</option>";
+			while ($row = pg_fetch_array($result)) 
+			{
+				echo "<option value='".$row['producerid']."'>".$row['producername']."</option>";
+			}
+		echo "</select>";
+	}
 		if (isset($_POST["btnAdd"])) {
 			$id = $_POST["txtID"];
 			$name = $_POST["txtName"];
 			$des = $_POST["txtDes"];
+			$producer = $_POST["ProducerList"];
 			$err = "";
 			if ($id == "") {
 				$err .= "<li>Enter Category ID, please</li>";
@@ -18,11 +31,11 @@
 			if ($err != "") {
 				echo "<li>$err</li>";
 			} else {
-				$sq = "SELECT * FROM Category where CatID = '$id' or CatName = '$name'";
-				$result = pg_query($conn, $sq);
+				$sq = "SELECT * FROM public.category where catid = '$id' or catname = '$name'";
+				$result = pg_query($Connect, $sq);
 				if (pg_num_rows($result) == 0) {
-					pg_query($conn, "INSERT INTO Category VALUES ('$id', '$name', '$des')") or die (mysqli_error($conn));
-					echo '<meta http-equiv="refresh" content = "0;URL=?page=category_management"/>';
+					pg_query($Connect, "INSERT INTO public.category VALUES ('$id', '$name', '$des', '$producer')");
+					echo '<meta http-equiv="refresh" content = "10;URL=?page=category_management"/>';
 				} else {
 					echo "<li>Duplicate category ID or Name</li>";
 				}
@@ -53,9 +66,16 @@
      			</div>
      		</div>
 
+			 <div class="form-group">   
+                    <label for="" class="col-sm-2 control-label">Producer:  </label>
+							<div class="col-sm-10">
+							      <?php bind_Producer_List($Connect);?>
+							</div>
+            </div>  
+
      		<div class="form-group">
      			<div class="col-sm-offset-2 col-sm-10">
-     				<input type="submit" class="btn btn-primary" name="btnAdd" id="btnAdd" value="Add new" />
+     				<input type="submit" class="btn btn-primary" name="btnAdd" id="btnAdd" value="Add new" onclick="window.location='?page=category_management'"/>
      				<input type="button" class="btn btn-primary" name="btnCancel" id="btnCancel" value="Cancel" onclick="window.location='?page=category_management'" />
 
      			</div>
