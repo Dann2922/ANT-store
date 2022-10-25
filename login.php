@@ -14,7 +14,7 @@ if (isset($_POST['btnLogin'])) {
   } else {
     include_once("connection.php");
     $pass = md5($pa);
-    $res = pg_query($conn, "SELECT UserName, CusPass FROM customer WHERE Username='$us'AND CusPass='$pass'" or die("Connect fail!"));
+    $res = pg_query($conn, "SELECT username, cuspass FROM public.customer WHERE username='$us'AND cuspass='$pass'" or die("Connect fail!"));
     $row = pg_fetch_array($res);
     if (pg_num_rows($res) == 2) {
       $_SESSION['us'] = $us;
