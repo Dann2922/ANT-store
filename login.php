@@ -6,8 +6,8 @@
 <?php
     if (isset($_POST['btnLogin']))
 	{
-		$us = $_POST['txtbUsername'];
-		$pa = $_POST['txtbpassword'];
+		$us = $_POST['txtUsername'];
+		$pa = $_POST['txtPass'];
 		$err = "";
 		if($us=="") 
 		{
