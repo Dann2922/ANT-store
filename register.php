@@ -22,8 +22,8 @@
     $sq = "SELECT * FROM public.customer WHERE UserName = '$us'";
     $res = pg_query($conn, $sq);
     if (pg_num_rows($res) == 0) {
-      pg_query($conn, "INSERT INTO customer
-                Values ('$us','$pass','$cusname', '$phone', '$email','$address')");
+      pg_query($conn, "INSERT INTO public.customer (username, cuspass, cusname, cusphone, cusemail, cusaddress, state)
+                Values ('$us','$pass','$cusname', '$phone', '$email','$address', 0)");
       echo '<meta http-equiv="refresh" content = "0; URL=index.php"/>';
     } else {
       echo "Username already exists";
