@@ -76,10 +76,10 @@
 				if ($err != "") {
 					echo "<ul>$err</ul>";
 				} else {
-					$sq = "SELECT * FROM category WHERE catID != '$id' and catName = '$name'";
-					$result = mysqli_query($conn, $sq);
-					if (mysqli_num_rows($result) == 0) {
-						mysqli_query($conn, "UPDATE public.ategory SET catname = '$name', catdesc = '$des', producername = '$producer' WHERE catid = '$id'");
+					$sq = "SELECT * FROM category WHERE catid != '$id' and catname = '$name'";
+					$result = pg_query($Connect, $sq);
+					if (pg_num_rows($result) == 0) {
+						pg_query($Connect, "UPDATE public.category SET catname = '$name', catdesc = '$des', producername = '$producer' WHERE catid = '$id'");
 						echo '<meta http-equiv="refresh" content = "0; ?page=category_management"/>';
 					} else {
 						echo "<li>Dulicate category Name</li>";
