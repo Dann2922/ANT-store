@@ -70,8 +70,8 @@
 		}
 		else
 		{
-			if ($pic['type']=="Image/jpg" || $pic['type']=="Image/jpeg" 
-			|| $pic['type']=="Image/png" || $pic['type']=="Image/gif")
+			if ($pic['type']=="image/jpg" || $pic['type']=="image/jpeg" 
+			|| $pic['type']=="image/png" || $pic['type']=="image/gif")
 			{
 				if ($pic['size'] <= 6614400)
 				{
