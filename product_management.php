@@ -81,7 +81,8 @@ else{
                     <td><?php echo $row["storename"]; ?></td>
                     <td align='center' class='col-control'>
                         <a href="Update_Product.php?id"></a>
-                        <img src='Image/<?php echo $row['proimg']?>' border='0' width="40" height="40"  /></td>
+                        <img src='Image/<?php echo $row['proimg']?>' border='0' width="40" height="40"  />
+                    </td>
                     <td align='center' class='col-control'><a href="?page=update_product&&id=<?php echo $row["proid"]; ?>">
                     <img src='images/edit.png' border='0'/></a></td>
                     <td align='center'>

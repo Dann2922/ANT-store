@@ -26,16 +26,16 @@
                 {
 			?>
 			<tr>
-              <td class="cotcheckbox"><?php echo $No; ?></td>
-              <td><?php echo $row["proname"] ?></td>
-              <td><?php echo $row["proprice"] ?></td>
-              <td align='center' class='columnfunction'>
-                        <img src='Image/<?php echo $row["proimg"] ?>' border='0' width="500" height="500" />
-                        </td>
-                        <td align='center' class='columnfunction'>
-                        <a href="#" class="btn btn-warning" style="color:black">Purchase</a>
-                        </td>
-                        
+            <td class="cotcheckbox"><?php echo $No; ?></td>
+            <td><?php echo $row["proname"] ?></td>
+            <td><?php echo $row["proprice"] ?></td>
+            <td align='center' class='columnfunction'>
+                <img src='Image/<?php echo $row['proimg']?>' border='0' width="40" height="40"/>
+            </td>
+            <td align='center' class='columnfunction'>
+                <a href="#" class="btn btn-warning" style="color:black">Purchase</a>
+            </td>  
+
             </tr>
             <?php
             $No++;
