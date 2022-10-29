@@ -30,7 +30,7 @@
               <td><?php echo $row["proname"] ?></td>
               <td><?php echo $row["proprice"] ?></td>
               <td align='center' class='columnfunction'>
-                        <img src='image/<?php echo $row["proimg"] ?>' border='0' width="500" height="500" />
+                        <img src='Image/<?php echo $row["proimg"] ?>' border='0' width="500" height="500" />
                         </td>
                         <td align='center' class='columnfunction'>
                         <a href="#" class="btn btn-warning" style="color:black">Purchase</a>
