@@ -1,5 +1,5 @@
-    <!-- Bootstrap -->
-	<link rel="stylesheet" href="css/bootstrap.min.css">
+<!-- Bootstrap -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
 	<script type="text/javascript" src="scripts/ckeditor/ckeditor.js"></script>
 <?php
 	include_once("connection.php");
@@ -70,8 +70,8 @@
 		}
 		else
 		{
-			if ($pic['type']=="Image/jpg" || $pic['type']=="Image/jpeg" 
-			|| $pic['type']=="Image/png" || $pic['type']=="Image/gif")
+			if ($pic['type']=="image/jpg" || $pic['type']=="image/jpeg" 
+			|| $pic['type']=="image/png" || $pic['type']=="image/gif")
 			{
 				if ($pic['size'] <= 6614400)
 				{
@@ -107,8 +107,7 @@
 
 <div class="container">
 	<h2 align="center">Adding new Product</h2>
-
-	 	<form id="frmProduct" name="frmProduct" method="post" enctype="multipart/form-data" action="" class="form-horizontal" role="form">
+	<form id="frmProduct" name="frmProduct" method="post" enctype="multipart/form-data" action="" class="form-horizontal" role="form">
 				<div class="form-group">
 					<label for="txtID" class="col-sm-2 control-label">Product ID:  </label>
 							<div class="col-sm-10">
@@ -162,7 +161,7 @@
                                             toolbar : [ ['Source','DocProps','-','Save','NewPage','Preview','-','Templates'],
                                                 ['Cut','Copy','Paste','PasteText','PasteWord','-','Print','SpellCheck'],
                                                 ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-                                                ['Form','Checkbox','Radio','TextField','Textarea','Select','Button','ImageButton','HiddenField'],
+												['Form','Checkbox','Radio','TextField','Textarea','Select','Button','ImageButton','HiddenField'],
                                                 ['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
                                                 ['OrderedList','UnorderedList','-','Outdent','Indent','Blockquote'],
                                                 ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
